@@ -66,7 +66,7 @@ flowchart LR
 <p>A model that fails or leaves a question out of its reply does not stop the run: the question falls back to the next answer available.</p>
 
 <h2 id="calibration">Recalibration</h2>
-<p>Every escalated question the local model also answered is a labeled example of how far the local model can be trusted. After each API batch, <code>local_trust</code> becomes the lowest confidence at which the local model agreed with the API model at least 90% of the time, over at least 10 examples. Each change is written to the blackboard's log.</p>
+<p>Every escalated question the local model also answered is a labeled example of how far the local model can be trusted. Escalations alone only show the local model's unsure answers, so the controller also <strong>audits</strong> a random 10% of the answers it would keep, asking the API model too. Questions are settled in rounds of 160; after each round, <code>local_trust</code> becomes the lowest confidence at which the local model agreed with the API model at least 90% of the time, over at least 10 examples, or <code>NEVER</code> (above 1) when no confidence qualifies, so every question the evidence does not settle goes up until the comparisons bring the threshold back down. Each change is written to the blackboard's log.</p>
 
 <h2 id="run">Running it</h2>
 <pre><code>from moira.workflow import Budget, ClaudeCodeModel, Controller, OllamaModel, Workflow, load_owl
