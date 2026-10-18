@@ -20,7 +20,7 @@
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
 <nav class="nav">
-<a class="brand-desk" href="index.html">MOIRA</a><a href="index.html">Overview</a><a href="getting-started.html">Getting started</a><a href="architecture.html" aria-current="page">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html">Reference</a>
+<a class="brand-desk" href="index.html">MOIRA</a><a href="index.html">Overview</a><a href="agents.html">Agentic ontologist</a><a href="getting-started.html">Getting started</a><a href="architecture.html" aria-current="page">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">Design</p>
@@ -52,11 +52,12 @@ flowchart LR
 
     <h2>Integration pipeline</h2>
     <div class="grid">
-      <section class="card"><h3>1. Matching</h3><p>Retrieve candidates and combine structural and textual evidence.</p></section>
-      <section class="card"><h3>2. Reasoning</h3><p>Normalize predicates and infer ontology-aware relations.</p></section>
-      <section class="card"><h3>3. Validation</h3><p>Measure candidates and selectively invoke an LLM for ambiguity.</p></section>
-      <section class="card"><h3>4. Refinement</h3><p>Repair conflicts and update the integrated graph.</p></section>
+      <section class="card"><h3>1. Matching (KROMA)</h3><p>Exact label and synonym matches, then near names, decided by evidence or a model.</p></section>
+      <section class="card"><h3>2. Validation</h3><p>Remove one-to-many and criss-cross conflicts; queue ties for review.</p></section>
+      <section class="card"><h3>3. Reasoning</h3><p>Place classes with no match under the target hierarchy, from their matched ancestors.</p></section>
+      <section class="card"><h3>4. Extraction</h3><p>Propose the <code>subClassOf</code> and <code>part_of</code> edges an ontology is missing.</p></section>
     </div>
+    <p>The orchestrator in <code>moira.workflow</code> routes every subagent's questions; see <a href="agents.html">Agentic ontologist</a>.</p>
 
     <h2>Package map</h2>
     <table>
@@ -216,6 +217,6 @@ flowchart TB
     </ul>
 </main>
 </div>
-<footer class="site">MOIRA notes. Ontology integration: parse, retrieve, reason, and validate.</footer>
+<footer class="site">MOIRA notes. The agentic ontologist: matching, extraction, reasoning, and validation under a budget.</footer>
 </body>
 </html>

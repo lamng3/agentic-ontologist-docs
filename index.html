@@ -16,16 +16,17 @@
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
 <nav class="nav">
-<a class="brand-desk" href="index.html">MOIRA</a><a href="index.html" aria-current="page">Overview</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html">Reference</a>
+<a class="brand-desk" href="index.html">MOIRA</a><a href="index.html" aria-current="page">Overview</a><a href="agents.html">Agentic ontologist</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">Notes</p>
 <h1>Overview</h1>
-<p class="lede">MOIRA loads an ontology, retrieves nearby concepts, and answers with a language model.</p>
+<p class="lede">MOIRA is an agentic ontologist: an orchestrator and four memory-augmented subagents (KROMA for matching, extraction, reasoning, and validation) that integrate ontologies, each question routed to the cheapest model that can settle it. Around them, a toolkit loads an ontology, retrieves nearby concepts, and answers with a language model.</p>
 
 <nav class="toc"><strong>On this page</strong><ol><li><a href="#pages">Pages</a></li><li><a href="#install">Install</a></li></ol></nav>
 <h2 id="pages">Pages</h2>
 <div class="cards">
+<a class="card" href="agents.html"><strong>Agentic ontologist</strong><span>The orchestrator, its subagents, routing, and cost.</span></a>
 <a class="card" href="getting-started.html"><strong>Getting started</strong><span>Install, configure, and ask a question.</span></a>
 <a class="card" href="architecture.html"><strong>Architecture</strong><span>Package layout, retrieval, and the cache.</span></a>
 <a class="card" href="api.html"><strong>API</strong><span>Workspace, parsers, models, and refinement.</span></a>
@@ -44,6 +45,6 @@ moira chat ontology.owl</code></pre>
 
 </main>
 </div>
-<footer class="site">MOIRA notes. Ontology integration: parse, retrieve, reason, and validate.</footer>
+<footer class="site">MOIRA notes. The agentic ontologist: matching, extraction, reasoning, and validation under a budget.</footer>
 </body>
 </html>
