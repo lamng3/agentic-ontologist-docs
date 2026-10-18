@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agentic ontologist — MOIRA</title>
+<title>Agents — Agentic Ontologist</title>
 <meta name="description" content="The orchestrator, its four subagents, how each question is routed, and what it costs.">
 <link rel="stylesheet" href="style.css">
 <script type="module">
@@ -14,17 +14,17 @@
 <body>
 <a class="skip" href="#content">Skip to content</a>
 <header class="top">
-  <a class="brand" href="index.html">MOIRA</a>
+  <a class="brand" href="index.html">Agentic Ontologist</a>
   <label class="nav-button" for="nav-toggle">Menu</label>
 </header>
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
 <nav class="nav">
-<a class="brand-desk" href="index.html">MOIRA</a><a href="index.html">Overview</a><a href="agents.html" aria-current="page">Agentic ontologist</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html">Reference</a>
+<a class="brand-desk" href="index.html">Agentic Ontologist</a><a href="index.html">Overview</a><a href="agents.html" aria-current="page">Agents</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">Agents</p>
-<h1>The agentic ontologist</h1>
+<h1>The orchestrator and its agents</h1>
 <p class="lede">One orchestrator and four memory-augmented subagents integrate two ontologies. Every question a subagent asks goes to the cheapest tier that can settle it.</p>
 
 <nav class="toc"><strong>On this page</strong><ol><li><a href="#subagents">Subagents</a></li><li><a href="#routing">Routing</a></li><li><a href="#calibration">Recalibration</a></li><li><a href="#run">Running it</a></li><li><a href="#cost">Cost</a></li></ol></nav>
@@ -69,7 +69,7 @@ flowchart LR
 <p>Every escalated question the local model also answered is a labeled example of how far the local model can be trusted. Escalations alone only show the local model's unsure answers, so the controller also <strong>audits</strong> a random 10% of the answers it would keep, asking the API model too. Questions are settled in rounds of 160; after each round, <code>local_trust</code> becomes the lowest confidence at which the local model agreed with the API model at least 90% of the time, over at least 10 examples, or <code>NEVER</code> (above 1) when no confidence qualifies, so every question the evidence does not settle goes up until the comparisons bring the threshold back down. Each change is written to the blackboard's log.</p>
 
 <h2 id="run">Running it</h2>
-<pre><code>from moira.workflow import Budget, ClaudeCodeModel, Controller, OllamaModel, Workflow, load_owl
+<pre><code>from agentic_ontologist.workflow import Budget, ClaudeCodeModel, Controller, OllamaModel, Workflow, load_owl
 
 source, target = load_owl("data/MouseHuman/mouse.owl"), load_owl("data/MouseHuman/human.owl")
 controller = Controller(local=OllamaModel("llama3.1"), api=ClaudeCodeModel("claude-sonnet-5-5"),
@@ -78,9 +78,9 @@ result = Workflow(controller).integrate(source, target, place=100)
 print(len(result.matches), result.validation.removed, result.tiers)</code></pre>
 
 <h2 id="cost">Cost</h2>
-<p>Every model call is recorded on <code>moira.costs.METER</code> with its tokens, seconds, and list-price dollars. <code>experiments/agentic_workflow</code> compares the routed policy with a local model alone, an API model alone, a call cap, and evidence alone, on all three tasks; see <a href="experiments.html">Experiments</a> and the live <a href="https://lamng3.github.io/moira/">showcase</a>.</p>
+<p>Every model call is recorded on <code>agentic_ontologist.costs.METER</code> with its tokens, seconds, and list-price dollars. <code>experiments/agentic_workflow</code> compares the routed policy with a local model alone, an API model alone, a call cap, and evidence alone, on all three tasks; see <a href="experiments.html">Experiments</a> and the live <a href="https://lamng3.github.io/agentic-ontologist/">showcase</a>.</p>
 </main>
 </div>
-<footer class="site">MOIRA notes. The agentic ontologist: matching, extraction, reasoning, and validation under a budget.</footer>
+<footer class="site">Agentic Ontologist notes. Matching, extraction, reasoning, and validation under a budget.</footer>
 </body>
 </html>

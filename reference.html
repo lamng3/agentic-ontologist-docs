@@ -3,35 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reference — MOIRA</title>
+<title>Reference — Agentic Ontologist</title>
 <meta name="description" content="Commands, extension points, and environment variables.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
 <header class="top">
-  <a class="brand" href="index.html">MOIRA</a>
+  <a class="brand" href="index.html">Agentic Ontologist</a>
   <label class="nav-button" for="nav-toggle">Menu</label>
 </header>
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
 <nav class="nav">
-<a class="brand-desk" href="index.html">MOIRA</a><a href="index.html">Overview</a><a href="agents.html">Agentic ontologist</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html" aria-current="page">Reference</a>
+<a class="brand-desk" href="index.html">Agentic Ontologist</a><a href="index.html">Overview</a><a href="agents.html">Agents</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html" aria-current="page">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">Commands</p>
 <h1>Reference</h1>
 <p class="lede">Commands, extension points, and environment variables.</p>
 <h2>Command-line interfaces</h2>
-    <pre><code>moira --help
-moira inspect ONTOLOGY.owl
-moira search ONTOLOGY.owl "natural-language text"
-moira query ONTOLOGY.owl "question"
-moira chat ONTOLOGY.owl [--log]
-moira memory clear ONTOLOGY.owl
-moira run --help
-moira-hypergraph --help
-moira-lint ONTOLOGY.ttl
+    <pre><code>agonto --help
+agonto inspect ONTOLOGY.owl
+agonto search ONTOLOGY.owl "natural-language text"
+agonto query ONTOLOGY.owl "question"
+agonto chat ONTOLOGY.owl [--log]
+agonto memory clear ONTOLOGY.owl
+agonto run --help
+agonto-hypergraph --help
+agonto-lint ONTOLOGY.ttl
 ./scripts/run_experiments.sh SUITE --dry-run</code></pre>
 
     <h2>Supported ontology inputs</h2>
@@ -46,13 +46,13 @@ moira-lint ONTOLOGY.ttl
       <tr><td><code>register_vector_index(name, factory)</code></td><td>Register a vector-index adapter</td></tr>
       <tr><td><code>OnlineOntologyRefiner.refine(graph, updates)</code></td><td>Apply streamed ontology updates and return deferred validation cases</td></tr>
       <tr><td><code>Parser(path).to_ontology()</code></td><td>Parse supported RDF or relation-dataset formats through one facade</td></tr>
-      <tr><td><code>create_model_router()</code></td><td>Choose <code>local</code>, <code>standard</code>, or <code>careful</code> once per run when <code>MOIRA_MODEL_ROUTING=jev</code></td></tr>
-      <tr><td><code>create_tool_gate()</code></td><td>Block configured external tool calls when <code>MOIRA_TOOL_GATE=jev</code></td></tr>
+      <tr><td><code>create_model_router()</code></td><td>Choose <code>local</code>, <code>standard</code>, or <code>careful</code> once per run when <code>AGONTO_MODEL_ROUTING=jev</code></td></tr>
+      <tr><td><code>create_tool_gate()</code></td><td>Block configured external tool calls when <code>AGONTO_TOOL_GATE=jev</code></td></tr>
     </table>
 
     <h2>Repository layout</h2>
     <table>
-      <tr><td><code>src/moira/</code></td><td>Installable library</td></tr>
+      <tr><td><code>src/agentic_ontologist/</code></td><td>Installable library</td></tr>
       <tr><td><code>tests/</code></td><td>Automated tests</td></tr>
       <tr><td><code>examples/</code></td><td>Runnable examples</td></tr>
       <tr><td><code>experiments/</code></td><td>Runner and maintained configurations</td></tr>
@@ -66,9 +66,9 @@ moira-lint ONTOLOGY.ttl
     <table>
       <tr><th>Variable</th><th>Purpose</th></tr>
       <tr><td><code>JEV_API_KEY</code></td><td>TypeSafe key. Copied to <code>TYPESAFE_API_KEY</code> when that variable is empty.</td></tr>
-      <tr><td><code>MOIRA_CONTEXT_HARNESS</code></td><td>Set to <code>jev</code> to score retrieved context. <code>MOIRA_CONTEXT_MODE</code> is <code>shadow</code> or <code>live</code>.</td></tr>
-      <tr><td><code>MOIRA_MODEL_ROUTING</code></td><td>Set to <code>jev</code> to route each run. Pair with <code>MOIRA_ROUTE_LOCAL</code>, <code>MOIRA_ROUTE_STANDARD</code>, and <code>MOIRA_ROUTE_CAREFUL</code>.</td></tr>
-      <tr><td><code>MOIRA_TOOL_GATE</code></td><td>Set to <code>jev</code> to gate tools. <code>MOIRA_GATED_TOOLS</code> lists names, and <code>MOIRA_TOOL_RISK_THRESHOLD</code> defaults to <code>0.5</code>.</td></tr>
+      <tr><td><code>AGONTO_CONTEXT_HARNESS</code></td><td>Set to <code>jev</code> to score retrieved context. <code>AGONTO_CONTEXT_MODE</code> is <code>shadow</code> or <code>live</code>.</td></tr>
+      <tr><td><code>AGONTO_MODEL_ROUTING</code></td><td>Set to <code>jev</code> to route each run. Pair with <code>AGONTO_ROUTE_LOCAL</code>, <code>AGONTO_ROUTE_STANDARD</code>, and <code>AGONTO_ROUTE_CAREFUL</code>.</td></tr>
+      <tr><td><code>AGONTO_TOOL_GATE</code></td><td>Set to <code>jev</code> to gate tools. <code>AGONTO_GATED_TOOLS</code> lists names, and <code>AGONTO_TOOL_RISK_THRESHOLD</code> defaults to <code>0.5</code>.</td></tr>
     </table>
     <p>Routing fails open to <code>LLM_MODEL</code>. An enabled tool gate fails closed for gated tools only. Query text and redacted tool arguments are sent to TypeSafe. Decisions appear on the existing trace as <code>model.routed</code> and <code>tool.blocked</code>.</p>
 
@@ -84,6 +84,6 @@ gitleaks git --config .gitleaks.toml</code></pre>
     </ul>
 </main>
 </div>
-<footer class="site">MOIRA notes. The agentic ontologist: matching, extraction, reasoning, and validation under a budget.</footer>
+<footer class="site">Agentic Ontologist notes. Matching, extraction, reasoning, and validation under a budget.</footer>
 </body>
 </html>
