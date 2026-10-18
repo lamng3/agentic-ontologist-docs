@@ -22,6 +22,20 @@
 <p class="kicker">Evaluation</p>
 <h1>Experiments</h1>
 <p class="lede">Run versioned JSON suites and retain readable, reproducible results without mixing generated artifacts into the library.</p>
+<h2>The orchestrator on Mouse–Human</h2>
+<p><code>experiments/agentic_workflow</code> runs each subagent on the OAEI anatomy track under five routing policies. Answers are shared across policies, and each policy is charged for the questions it asked.</p>
+<table>
+<tr><th>Policy</th><th>Matching F1</th><th>Extraction precision / recall</th><th>Reasoning correct / exact</th><th>API calls</th><th>API spend</th></tr>
+<tr><td>Routed</td><td>0.913</td><td>0.617 / 0.567</td><td>0.25 / 0.24</td><td>97</td><td>$0.96</td></tr>
+<tr><td>Routed, capped</td><td>0.855</td><td>0.533 / 0.433</td><td>0.25 / 0.24</td><td>30</td><td>$0.30</td></tr>
+<tr><td>Local only (llama3.1)</td><td>0.823</td><td>0.276 / 0.293</td><td>0.19 / 0.19</td><td>0</td><td>$0</td></tr>
+<tr><td>API only (claude-sonnet-5-5)</td><td>0.924</td><td>0.740 / 0.620</td><td>0.43 / 0.36</td><td>108</td><td>$1.11</td></tr>
+<tr><td>Evidence only</td><td>0.839</td><td>0.800 / 0.367</td><td>0.42 / 0.34</td><td>0</td><td>$0</td></tr>
+</table>
+<p>With llama3.1 as the local tier, audits show it disagrees with the API model too often, so the orchestrator stops trusting it and routing saves little beyond the free evidence tier. Reasoning has fewer questions than one recalibration round, so the routed policy kept llama3.1's placements there. Every decision is in the <a href="https://lamng3.github.io/agentic-ontologist/">showcase</a>.</p>
+<pre><code>python experiments/agentic_workflow/run.py --json results/agentic_workflow/2026-10-18.json
+python showcase/build.py results/agentic_workflow/2026-10-18.json</code></pre>
+
 <h2>Start with the smoke benchmark</h2>
     <pre><code>./scripts/run_experiments.sh smoke
 ./scripts/run_experiments.sh smoke
