@@ -82,6 +82,7 @@ flowchart LR
       <tr><td><code>prompting/</code></td><td>Typed ontology-equivalence prompts and machine-readable answer parsing</td></tr>
       <tr><td><code>validation/</code></td><td>Alignment metrics, validation rules, tuple evaluation, pipelines, and ontology linting</td></tr>
       <tr><td><code>uq/</code></td><td>Dependency-free agreement scoring and optional UQLM, graph, and ensemble backends</td></tr>
+      <tr><td><code>integrations/memcommit/</code></td><td>Shared agent memory on <a href="https://github.com/lamng3/memcommit">MemCommit</a>: run traces, the answer cache as a view of the store, the declared memory structure, and an OntoDB storage engine</td></tr>
     </table>
 
     <h2>Algorithm extension points</h2>
@@ -155,6 +156,16 @@ flowchart LR
     <h3>Eviction</h3>
     <p>Each tier drops records when it passes its cap. <code>lfu</code> removes the least frequently read record, then the one touched longest ago. <code>lru</code> removes the record that was read or written longest ago. <code>2q</code> removes a one-time record before a repeated one. Hot, short-term, and long-term use <code>AGONTO_CACHE_EVICTION</code>, which defaults to <code>lfu</code>. A new policy is a class with <code>choose(entries)</code> registered under a name. A new tier is a new file under <code>agentic_ontologist.memory.cache</code>.</p>
     <p><code>AGONTO_CACHE_DIR</code> moves the folder. <code>AGONTO_HOT_ENTRIES</code>, <code>AGONTO_SHORT_TERM_NODES</code>, and <code>AGONTO_LONG_TERM_ENTRIES</code> set the three caps.</p>
+
+    <h2>Shared memory</h2>
+    <p>The four subagents can share one MemCommit store: a transactional log of memories, each with the memories it was derived from. It is optional, and separate from the query cache above. <code>agentic_ontologist.integrations.memcommit</code> connects the Agentic Ontologist to it. Install <code>memcommit</code>, or clone it beside this repository.</p>
+    <div class="grid">
+      <section class="card"><h3>Declared structure</h3><p><code>STRUCTURE</code> is a MemCommit <code>Schema</code> naming the kinds the Agentic Ontologist writes. A <code>question</code> holds the user's question. An <code>answer</code> holds the question, the answer, and the concepts and edges it rests on, and must be derived from its question. <code>routing</code>, <code>llm_request</code>, and <code>reflection</code> are steps of an agent run. <code>attach_structure(store)</code> makes a guard check the shape of every write at commit and records the schema in the store's log, so each past state shows which structure held. Kinds that other systems write to the same store, such as KROMA's matches and Aegis's ontology versions, are not checked.</p></section>
+      <section class="card"><h3>Traces</h3><p><code>MemCommitTraceObserver</code> is an agent observer. It writes each run to the store as a trace while it runs, one memory per step, so another agent can read this agent's reasoning and tool results as premises. <code>import_trace</code> loads a saved <code>memory_trace_*.json</code> with its tree.</p></section>
+      <section class="card"><h3>Answer cache</h3><p><code>OntologistAnswerCache</code> keeps the three-tier query cache in step with the store. When something an answer was built on is invalidated, the answer goes stale and the cache drops it, so a cache hit never serves a stale answer. <code>OntologistFrontDesk</code> asks through the cache and, on a miss, through the agents.</p></section>
+      <section class="card"><h3>OntoDB engine</h3><p><code>OntoDBEngine</code> keeps the memory log in an OntoDB database next to the ontology, as RDF under <code>urn:memcommit:</code>, so provenance is a SPARQL query, such as every memory derived from one ontology version.</p></section>
+    </div>
+    <p>The <a href="https://lamng3.github.io/agentic-ontologist/">showcase</a> lists the declared kinds under Memory structure. <code>examples/shared_memory_workflow.py</code> runs the whole loop, including a late write built on a poisoned ontology version that the store rejects.</p>
 
     <h2>Agent runtime</h2>
     <p>The public <code>agentic_ontologist.agents</code> API exposes the agent, observers, Ontology-of-Thought models, and supported tools. Internally, the agent emits each event once, the OOT observer owns conversation memory, and the thought graph is derived from that memory for persistence and query optimization. Optional Jev routing and gating add <code>model.routed</code> and <code>tool.blocked</code> to that same event stream. They stay off unless configured, and they do not replace the context harness that selects evidence before prompting.</p>
