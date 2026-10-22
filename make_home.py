@@ -7,8 +7,7 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-HEAD = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>Overview — Agentic Ontologist</title>\n<meta name="description" content="Agentic Ontologist documentation: install, architecture, API, and experiments.">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=TikTok+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css">\n</head>\n'
+HEAD = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>Overview — Agentic Ontologist</title>\n<meta name="description" content="Agentic Ontologist documentation: install, architecture, API, and experiments.">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=TikTok+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">\n<link rel="icon" href="favicon.svg" type="image/svg+xml">\n<link rel="stylesheet" href="style.css">\n</head>\n'
 HEADER = '<header class="site">\n  <a class="logo" href="index.html"><span class="logo-mark">AO</span><span>Agentic Ontologist</span></a>\n  <nav class="site">\n    <a href="getting-started.html">Start</a>\n    <a href="agents.html">Agents</a>\n    <a href="architecture.html">Architecture</a>\n    <label class="nav-button" for="nav-toggle">Menu</label>\n    <a href="https://github.com/lamng3/agentic-ontologist" class="pill">GitHub ↗</a>\n  </nav>\n</header>'
 LEDE = 'The Agentic Ontologist is an orchestrator and four memory-augmented subagents (KROMA for matching, extraction, reasoning, and validation) that integrate ontologies, each question routed to the cheapest model that can settle it. Around them, a toolkit loads an ontology, retrieves nearby concepts, and answers with a language model.'
 
@@ -27,6 +26,7 @@ HERO = """<section class="hero">
   </div>
   <div class="demo-card" id="demo">
     <div class="head"><h3>Quality against cost</h3><span class="tag">one <b>recorded run</b></span></div>
+    <p class="try">Try it: Pick a task to compare routing policies, then press Another to watch a real question get settled.</p>
     <div class="tabs" id="tabs" role="tablist"></div>
     <div class="bars" id="policies"></div>
     <hr class="rule">
