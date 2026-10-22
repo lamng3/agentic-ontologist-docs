@@ -19,7 +19,7 @@
 <a class="skip" href="#content">Skip to content</a>
 <header class="site">
   <a class="logo" href="index.html"><span class="logo-mark">AO</span><span>Agentic Ontologist</span></a>
-  <nav class="site">
+  <nav class="site" aria-label="Site">
     <a href="getting-started.html">Start</a>
     <a href="agents.html">Agents</a>
     <a href="architecture.html">Architecture</a>
@@ -29,16 +29,16 @@
 </header>
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
-<nav class="nav">
+<nav class="nav" aria-label="Manual pages">
 <a class="brand-desk" href="index.html">Agentic Ontologist Manual</a><input class="search" id="q" type="search" placeholder="Search the manual" autocomplete="off"><ul id="results" hidden></ul><a href="index.html">Overview</a><a href="agents.html">Agents</a><a href="getting-started.html">Getting started</a><a href="architecture.html" aria-current="page">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="leaderboard.html">Leaderboard</a><a href="reference.html">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">Design</p>
 <h1>Architecture</h1>
 <p class="lede">The installable package is isolated under <code>src/agentic_ontologist/</code>. Everything else is support material.</p>
-<nav class="toc"><strong>On this page</strong><ol><li><a href="#system-overview">System overview</a></li><li><a href="#integration-pipeline">Integration pipeline</a></li><li><a href="#package-map">Package map</a></li><li><a href="#algorithm-extension-points">Algorithm extension points</a></li><li><a href="#vector-retrieval">Vector retrieval</a></li><li><a href="#retrieval-plugins">Retrieval plugins</a></li><li><a href="#memory-and-cache">Memory and cache</a></li><li><a href="#shared-memory">Shared memory</a></li><li><a href="#agent-runtime">Agent runtime</a></li><li><a href="#agent-tools">Agent tools</a></li><li><a href="#extension-patterns">Extension patterns</a></li></ol></nav>
+<nav class="toc" aria-label="On this page"><strong>On this page</strong><ol><li><a href="#system-overview">System overview</a></li><li><a href="#integration-pipeline">Integration pipeline</a></li><li><a href="#package-map">Package map</a></li><li><a href="#algorithm-extension-points">Algorithm extension points</a></li><li><a href="#vector-retrieval">Vector retrieval</a></li><li><a href="#retrieval-plugins">Retrieval plugins</a></li><li><a href="#memory-and-cache">Memory and cache</a></li><li><a href="#shared-memory">Shared memory</a></li><li><a href="#agent-runtime">Agent runtime</a></li><li><a href="#agent-tools">Agent tools</a></li><li><a href="#extension-patterns">Extension patterns</a></li></ol></nav>
 <h2 id="system-overview">System overview</h2>
-    <div class="diagram" aria-label="The Agentic Ontologist system architecture">
+    <div role="group" class="diagram" aria-label="The Agentic Ontologist system architecture">
       <pre class="mermaid">
 flowchart LR
     Input["OWL / RDF / JSON-LD"] --> Parser["Parser"]
@@ -71,8 +71,7 @@ flowchart LR
     <p>The orchestrator in <code>agentic_ontologist.workflow</code> routes every subagent's questions; see <a href="agents.html">Agents</a>.</p>
 
     <h2 id="package-map">Package map</h2>
-    <table>
-      <tr><th>Module</th><th>Responsibility</th></tr>
+    <table><thead><tr><th scope="col">Module</th><th scope="col">Responsibility</th></tr></thead><tbody>
       <tr><td><code>cli.py</code> and <code>workspace.py</code></td><td>Path-based terminal commands and reusable ontology query sessions</td></tr>
       <tr><td><code>agents/core/</code></td><td>Agent orchestration, typed events, and tool execution</td></tr>
       <tr><td><code>agents/decisions.py</code></td><td>Optional Jev model routing and tool-risk gating, recorded on the existing trace</td></tr>
@@ -94,7 +93,7 @@ flowchart LR
       <tr><td><code>validation/</code></td><td>Alignment metrics, validation rules, tuple evaluation, pipelines, and ontology linting</td></tr>
       <tr><td><code>uq/</code></td><td>Dependency-free agreement scoring and optional UQLM, graph, and ensemble backends</td></tr>
       <tr><td><code>integrations/memcommit/</code></td><td>Shared agent memory on <a href="https://github.com/lamng3/memcommit">MemCommit</a>: run traces, the answer cache as a view of the store, the declared memory structure, and an OntoDB storage engine</td></tr>
-    </table>
+    </tbody></table>
 
     <h2 id="algorithm-extension-points">Algorithm extension points</h2>
     <div class="grid">
@@ -134,7 +133,7 @@ flowchart LR
 
     <h2 id="memory-and-cache">Memory and cache</h2>
     <p>The Agentic Ontologist keeps two stores for one ontology. Embedding memory holds the concept vectors so the next run can skip embedding. The query cache holds answers so a repeated question can skip the model. They live in different folders and are not interchangeable.</p>
-    <div class="diagram" aria-label="Query cache replay">
+    <div role="group" class="diagram" aria-label="Query cache replay">
       <pre class="mermaid">
 flowchart LR
     Ask["Ask"] --> Hot["Hot hash"]
@@ -180,7 +179,7 @@ flowchart LR
 
     <h2 id="agent-runtime">Agent runtime</h2>
     <p>The public <code>agentic_ontologist.agents</code> API exposes the agent, observers, Ontology-of-Thought models, and supported tools. Internally, the agent emits each event once, the OOT observer owns conversation memory, and the thought graph is derived from that memory for persistence and query optimization. Optional Jev routing and gating add <code>model.routed</code> and <code>tool.blocked</code> to that same event stream. They stay off unless configured, and they do not replace the context harness that selects evidence before prompting.</p>
-    <div class="diagram" aria-label="Agent runtime architecture">
+    <div role="group" class="diagram" aria-label="Agent runtime architecture">
       <pre class="mermaid">
 flowchart TB
     User["User query"] --> Router["Optional model router"]

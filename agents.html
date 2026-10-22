@@ -19,7 +19,7 @@
 <a class="skip" href="#content">Skip to content</a>
 <header class="site">
   <a class="logo" href="index.html"><span class="logo-mark">AO</span><span>Agentic Ontologist</span></a>
-  <nav class="site">
+  <nav class="site" aria-label="Site">
     <a href="getting-started.html">Start</a>
     <a href="agents.html">Agents</a>
     <a href="architecture.html">Architecture</a>
@@ -29,7 +29,7 @@
 </header>
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
-<nav class="nav">
+<nav class="nav" aria-label="Manual pages">
 <a class="brand-desk" href="index.html">Agentic Ontologist Manual</a><input class="search" id="q" type="search" placeholder="Search the manual" autocomplete="off"><ul id="results" hidden></ul><a href="index.html">Overview</a><a href="agents.html" aria-current="page">Agents</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="leaderboard.html">Leaderboard</a><a href="reference.html">Reference</a>
 </nav>
 <main id="content">
@@ -37,10 +37,10 @@
 <h1>The orchestrator and its agents</h1>
 <p class="lede">One orchestrator and four memory-augmented subagents integrate two ontologies. Every question a subagent asks goes to the cheapest tier that can settle it.</p>
 
-<nav class="toc"><strong>On this page</strong><ol><li><a href="#subagents">Subagents</a></li><li><a href="#routing">Routing</a></li><li><a href="#calibration">Recalibration</a></li><li><a href="#run">Running it</a></li><li><a href="#cost">Cost</a></li></ol></nav>
+<nav class="toc" aria-label="On this page"><strong>On this page</strong><ol><li><a href="#subagents">Subagents</a></li><li><a href="#routing">Routing</a></li><li><a href="#calibration">Recalibration</a></li><li><a href="#run">Running it</a></li><li><a href="#cost">Cost</a></li></ol></nav>
 
 <h2 id="subagents">Subagents</h2>
-<div class="diagram" aria-label="The orchestrator and its subagents">
+<div role="group" class="diagram" aria-label="The orchestrator and its subagents">
 <pre class="mermaid">
 flowchart LR
     S["Source + target ontology"] --> K["KROMA: matching"]
@@ -58,13 +58,12 @@ flowchart LR
     E --> B
 </pre>
 </div>
-<table>
-<tr><th>Subagent</th><th>Asks</th><th>Answers</th><th>Evidence it brings</th></tr>
+<table><thead><tr><th scope="col">Subagent</th><th scope="col">Asks</th><th scope="col">Answers</th><th scope="col">Evidence it brings</th></tr></thead><tbody>
 <tr><td><code>KromaAgent</code> (KROMA)</td><td>Is this source class the same as this target class?</td><td>yes, no</td><td>Character n-gram similarity of names, plus agreement of already matched parents</td></tr>
 <tr><td><code>ExtractionAgent</code></td><td>How does this class relate to this candidate?</td><td><code>subClassOf</code>, <code>part_of</code>, none</td><td>Label rules (a head word gives <code>subClassOf</code>, a modifier gives <code>part_of</code>) and the parents of similar classes</td></tr>
 <tr><td><code>ReasoningAgent</code></td><td>Under which candidate does this unmatched class belong?</td><td>a candidate code, or none</td><td>The counterparts of its nearest matched ancestors, and their descendants two levels down</td></tr>
 <tr><td><code>ValidationAgent</code></td><td>(asks nothing)</td><td>removes the weaker side of each conflict</td><td>One-to-many matches and criss-cross matches that would collapse a hierarchy</td></tr>
-</table>
+</tbody></table>
 <p>KROMA settles exact label and synonym matches first, and never asks again about a class it settled, which is KROMA's refinement step in this setting. Tied conflicts go to a review queue for a person.</p>
 
 <h2 id="routing">Routing</h2>

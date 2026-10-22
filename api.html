@@ -15,7 +15,7 @@
 <a class="skip" href="#content">Skip to content</a>
 <header class="site">
   <a class="logo" href="index.html"><span class="logo-mark">AO</span><span>Agentic Ontologist</span></a>
-  <nav class="site">
+  <nav class="site" aria-label="Site">
     <a href="getting-started.html">Start</a>
     <a href="agents.html">Agents</a>
     <a href="architecture.html">Architecture</a>
@@ -25,14 +25,14 @@
 </header>
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
-<nav class="nav">
+<nav class="nav" aria-label="Manual pages">
 <a class="brand-desk" href="index.html">Agentic Ontologist Manual</a><input class="search" id="q" type="search" placeholder="Search the manual" autocomplete="off"><ul id="results" hidden></ul><a href="index.html">Overview</a><a href="agents.html">Agents</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html" aria-current="page">API</a><a href="experiments.html">Experiments</a><a href="leaderboard.html">Leaderboard</a><a href="reference.html">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">API</p>
 <h1>API reference</h1>
 <p class="lede">Public classes, supported types, extension points, examples, and direct links to their implementations.</p>
-<nav class="toc"><strong>On this page</strong><ol><li><a href="#ontologyworkspace">OntologyWorkspace</a></li><li><a href="#parser">Parser</a></li><li><a href="#graph-data-model">Graph data model</a></li><li><a href="#ontology-refinement">Ontology refinement</a></li><li><a href="#embeddings-and-vector-indexes">Embeddings and vector indexes</a></li><li><a href="#retrieval-providers">Retrieval providers</a></li><li><a href="#harness">Harness</a></li><li><a href="#context-harness">Context harness</a></li><li><a href="#agent-runtime">Agent runtime</a></li><li><a href="#validation">Validation</a></li><li><a href="#prompt-construction">Prompt construction</a></li><li><a href="#uncertainty-quantification">Uncertainty quantification</a></li><li><a href="#public-import-surfaces">Public import surfaces</a></li></ol></nav>
+<nav class="toc" aria-label="On this page"><strong>On this page</strong><ol><li><a href="#ontologyworkspace">OntologyWorkspace</a></li><li><a href="#parser">Parser</a></li><li><a href="#graph-data-model">Graph data model</a></li><li><a href="#ontology-refinement">Ontology refinement</a></li><li><a href="#embeddings-and-vector-indexes">Embeddings and vector indexes</a></li><li><a href="#retrieval-providers">Retrieval providers</a></li><li><a href="#harness">Harness</a></li><li><a href="#context-harness">Context harness</a></li><li><a href="#agent-runtime">Agent runtime</a></li><li><a href="#validation">Validation</a></li><li><a href="#prompt-construction">Prompt construction</a></li><li><a href="#uncertainty-quantification">Uncertainty quantification</a></li><li><a href="#public-import-surfaces">Public import surfaces</a></li></ol></nav>
 <section id="workspace" class="api-section">
       <p class="eyebrow">agentic_ontologist.workspace</p>
       <h2 id="ontologyworkspace">OntologyWorkspace</h2>
@@ -43,13 +43,12 @@
     format: str | None = None,
     refine: bool = False,
 )</code></pre>
-      <table>
-        <tr><th>Method</th><th>Returns</th><th>Purpose</th></tr>
+      <table><thead><tr><th scope="col">Method</th><th scope="col">Returns</th><th scope="col">Purpose</th></tr></thead><tbody>
         <tr><td><code>summary</code></td><td><code>OntologySummary</code></td><td>Path, format, ontology name, version, concept count, and relation count.</td></tr>
         <tr><td><code>prepare()</code></td><td><code>ConceptGraph</code></td><td>Build and embed the graph once, then cache it.</td></tr>
         <tr><td><code>search(query, *, top_k=10)</code></td><td><code>list[dict[str, Any]]</code></td><td>Retrieve concepts without invoking an LLM.</td></tr>
         <tr><td><code>ask(query, *, top_k=10, model=None, temperature=0.2, save_traces=False, harness=None, web_passages=None)</code></td><td><code>str</code></td><td>Generate an answer from retrieved context. An optional harness can select that context.</td></tr>
-      </table>
+      </tbody></table>
       <pre><code>from agentic_ontologist.workspace import OntologyWorkspace
 
 workspace = OntologyWorkspace("ontology.owl", refine=True)
@@ -72,15 +71,14 @@ answer = workspace.ask("Which concepts describe freshwater temperature?")</code>
     config: ParserConfig | None = None,
     format: str | InputFormat | None = None,
 )</code></pre>
-      <table>
-        <tr><th>Supported input</th><th>Extensions / values</th><th>Adapter</th></tr>
+      <table><thead><tr><th scope="col">Supported input</th><th scope="col">Extensions / values</th><th scope="col">Adapter</th></tr></thead><tbody>
         <tr><td>RDF/XML and OWL</td><td><code>.owl</code>, <code>.rdf</code>, <code>.xml</code>, <code>xml</code></td><td><code>RDFParser</code></td></tr>
         <tr><td>Turtle and N3</td><td><code>.ttl</code>, <code>.n3</code>, <code>turtle</code>, <code>n3</code></td><td><code>RDFParser</code></td></tr>
         <tr><td>RDF datasets</td><td><code>.nt</code>, <code>.trig</code>, <code>.trix</code>, <code>.jsonld</code></td><td><code>RDFParser</code></td></tr>
         <tr><td>Structured JSON</td><td><code>.json</code></td><td><code>JSONParser</code></td></tr>
         <tr><td>Relation text</td><td><code>.txt</code></td><td><code>TextParser</code></td></tr>
         <tr><td>Compression</td><td><code>.gz</code>, <code>.bz2</code></td><td>Detected from the preceding suffix</td></tr>
-      </table>
+      </tbody></table>
       <pre><code>from agentic_ontologist.parser import Parser
 
 ontology = Parser("domain.ttl", name="domain", version="1.0").to_ontology()
@@ -91,8 +89,7 @@ triples = Parser("domain.owl").extract_triples()</code></pre>
     <section id="graphs" class="api-section">
       <p class="eyebrow">agentic_ontologist.algorithms.graph</p>
       <h2 id="graph-data-model">Graph data model</h2>
-      <table>
-        <tr><th>Class</th><th>Role</th><th>Source</th></tr>
+      <table><thead><tr><th scope="col">Class</th><th scope="col">Role</th><th scope="col">Source</th></tr></thead><tbody>
         <tr><td><code>Concept</code></td><td>Ontology concept with labels, synonyms, definitions, and typed adjacency.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/graph/concept.py">concept.py</a></td></tr>
         <tr><td><code>ConceptRelation</code></td><td>Directed predicate between two concepts.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/graph/concept.py">concept.py</a></td></tr>
         <tr><td><code>Ontology</code></td><td>Mutable concept and relation collection with union, noise, serialization, and lookup operations.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/graph/ontology.py">ontology.py</a></td></tr>
@@ -100,7 +97,7 @@ triples = Parser("domain.owl").extract_triples()</code></pre>
         <tr><td><code>ConceptGraph</code></td><td>Pairwise equivalent-class graph with embedding search and rank computation.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/graph/concept_graph.py">concept_graph.py</a></td></tr>
         <tr><td><code>ConceptHypergraph</code></td><td>Hyperedge representation with pairwise projection for embeddings and retrieval.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/graph/hypergraph.py">hypergraph.py</a></td></tr>
         <tr><td><code>OntologyStructureBuilder</code></td><td>Shared builder for graph representations.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/graph/builder.py">builder.py</a></td></tr>
-      </table>
+      </tbody></table>
       <pre><code>from agentic_ontologist.algorithms.graph import ConceptGraph
 from agentic_ontologist.parser import Parser
 
@@ -114,14 +111,13 @@ neighbors = graph.nearest_nodes("material fatigue", k=10)</code></pre>
     <section id="refinement" class="api-section">
       <p class="eyebrow">agentic_ontologist.algorithms.refinement</p>
       <h2 id="ontology-refinement">Ontology refinement</h2>
-      <table>
-        <tr><th>Class</th><th>Signature / behavior</th><th>Source</th></tr>
+      <table><thead><tr><th scope="col">Class</th><th scope="col">Signature / behavior</th><th scope="col">Source</th></tr></thead><tbody>
         <tr><td><code>OntologyRefiner</code></td><td><code>refine(ontology, options=None, *, fallback_if_expanded=False) -&gt; Ontology</code><br>Rule-based relation and ontology rebuilding.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/refinement/ontology.py">ontology.py</a></td></tr>
         <tr><td><code>OfflineGraphRefiner</code></td><td><code>refine(graph) -&gt; ConceptGraph</code><br>Complete-graph partition refinement and safe bisimilar collapse.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/refinement/offline.py">offline.py</a></td></tr>
         <tr><td><code>OnlineOntologyRefiner</code></td><td><code>refine(graph, updates, *, copy_graph=True) -&gt; OnlineRefinementResult</code><br>Rank-aware streamed maintenance with applied and deferred updates.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/refinement/online.py">online.py</a></td></tr>
         <tr><td><code>GraphUpdate</code></td><td>Typed source, target, relation, score, confidence, and optional semantic judgment.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/refinement/online.py">online.py</a></td></tr>
         <tr><td><code>RelationRefiner</code></td><td>Configurable rule pipeline returning structured diagnostics.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/algorithms/refinement/pipeline.py">pipeline.py</a></td></tr>
-      </table>
+      </tbody></table>
       <pre><code>from agentic_ontologist.algorithms.refinement import (
     GraphUpdate,
     OfflineGraphRefiner,
@@ -142,15 +138,14 @@ print(result.applied_updates, result.deferred_updates)</code></pre>
     <section id="embeddings" class="api-section">
       <p class="eyebrow">agentic_ontologist.embeddings</p>
       <h2 id="embeddings-and-vector-indexes">Embeddings and vector indexes</h2>
-      <table>
-        <tr><th>API</th><th>Supported behavior</th><th>Source</th></tr>
+      <table><thead><tr><th scope="col">API</th><th scope="col">Supported behavior</th><th scope="col">Source</th></tr></thead><tbody>
         <tr><td><code>TextEmbedding(model_name="Qwen/Qwen3-Embedding-0.6B", device=None)</code></td><td>Replaceable text encoder backed by Sentence Transformers.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/embeddings/encoders/text.py">text.py</a></td></tr>
         <tr><td><code>GraphEmbedding(..., dimensions=128, **node2vec_options)</code></td><td>Node2Vec graph encoder for concept graphs and projected hypergraphs.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/embeddings/encoders/graph.py">graph.py</a></td></tr>
         <tr><td><code>fuse_embeddings(...)</code></td><td>Validated weighted graph/text vector fusion.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/embeddings/fusion.py">fusion.py</a></td></tr>
         <tr><td><code>TorchExactVectorIndex(dimension=None)</code></td><td>Built-in deterministic cosine index with ID filtering.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/embeddings/vector_index/torch_exact.py">torch_exact.py</a></td></tr>
         <tr><td><code>BaseVectorIndex</code></td><td>Adapter base for ANN, DiskANN, or vector-database integrations.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/embeddings/vector_index/base.py">base.py</a></td></tr>
         <tr><td><code>register_vector_index(name, factory)</code></td><td>Register a named backend used by <code>create_vector_index</code>.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/embeddings/vector_index/registry.py">registry.py</a></td></tr>
-      </table>
+      </tbody></table>
       <p class="note"><strong>Built in:</strong> <code>torch-exact</code>. ANN, DiskANN, and vector-database backends are supported as adapters but are not bundled implementations.</p>
       <pre><code>from agentic_ontologist.retrieval import create_vector_index, register_vector_index
 
@@ -162,13 +157,12 @@ results = index.search(query_vector, k=10)</code></pre>
     <section id="retrieval" class="api-section">
       <p class="eyebrow">agentic_ontologist.retrieval</p>
       <h2 id="retrieval-providers">Retrieval providers</h2>
-      <table>
-        <tr><th>Provider</th><th>Network</th><th>Configuration</th></tr>
+      <table><thead><tr><th scope="col">Provider</th><th scope="col">Network</th><th scope="col">Configuration</th></tr></thead><tbody>
         <tr><td><code>static</code></td><td>No</td><td>In-memory deterministic counts.</td></tr>
         <tr><td><code>dataset</code></td><td>No</td><td>Counts supplied by a local dataset.</td></tr>
         <tr><td><code>mediawiki</code></td><td>Yes</td><td>Language and Wikimedia project.</td></tr>
         <tr><td><code>google-cse</code></td><td>Yes</td><td><code>GOOGLE_API_KEY</code> and <code>GOOGLE_CSE_CX</code>.</td></tr>
-      </table>
+      </tbody></table>
       <pre><code>from agentic_ontologist.retrieval import (
     create_web_search,
     describe_web_search,
@@ -182,23 +176,21 @@ count = provider.search_count("ontology matching")</code></pre>
 
       <h2 id="harness">Harness</h2>
       <p>One small model answers typed questions about the current question and the last few turns of this chat. The call is SGLang <code>POST /v1/systemone</code> at <code>http://127.0.0.1:30000</code> (<code>AGONTO_HARNESS_URL</code>). An empty value keeps the Ollama router, <code>ollama:phi3</code>. A local policy reads those answers and chooses replay or retrieve. The choice list stays at 26 options, including retrieve. The reasoner is the only model that writes the answer, and it stays the chat model.</p>
-      <table>
-        <tr><th>Type</th><th>Returns</th><th>Used for</th></tr>
+      <table><thead><tr><th scope="col">Type</th><th scope="col">Returns</th><th scope="col">Used for</th></tr></thead><tbody>
         <tr><td><code>Choice</code></td><td><code>choice</code>, <code>probabilities</code>, <code>confidence</code></td><td>Which cached question this one matches, or retrieve.</td></tr>
         <tr><td><code>Score</code></td><td><code>score</code>, <code>probabilities</code>, <code>confidence</code></td><td>How close the wording is, from different to the same question.</td></tr>
         <tr><td><code>Noul</code></td><td>A probability from 0 to 1</td><td>Whether the intent is the same, and whether this turn continues the previous one.</td></tr>
-      </table>
+      </tbody></table>
       <p>Replay happens when the choice names a cached question, or when same-intent is at least 0.8, the score is “Same question,” and one cached question is the nearest choice. A failed call falls open to retrieve. A follow-up hangs under the previous question when the continuation probability is at least 0.8. A new topic hangs from a virtual root. Under each question the trie records the route, the ontology concept ids, and the answer. That trie is this chat only. The answer cache stays the memory shared across chats.</p>
       <p class="note">Jev model routing (<code>AGONTO_MODEL_ROUTING=jev</code>) and the Jev context harness (<code>AGONTO_CONTEXT_HARNESS=jev</code>) stay optional extras. They are separate from this call.</p>
 
       <h2 id="context-harness">Context harness</h2>
       <p>Retrieval remains responsible for recall. The harness decides which retrieved concepts, neighbors, and web passages enter the prompt.</p>
-      <table>
-        <tr><th>Class</th><th>Behavior</th><th>Source</th></tr>
+      <table><thead><tr><th scope="col">Class</th><th scope="col">Behavior</th><th scope="col">Source</th></tr></thead><tbody>
         <tr><td><code>PassthroughHarness</code></td><td>Returns the original shortlist. This is the default.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/retrieval/context.py">context.py</a></td></tr>
         <tr><td><code>JevContextHarness</code></td><td>Uses Jev contextual scoring to filter and rerank. Shadow mode records the proposal while still returning the original shortlist.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/retrieval/context.py">context.py</a></td></tr>
         <tr><td><code>create_context_harness(name=None)</code></td><td>Reads <code>AGONTO_CONTEXT_HARNESS</code>. <code>jev</code> starts in shadow mode unless <code>AGONTO_CONTEXT_MODE=live</code>.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/retrieval/context.py">context.py</a></td></tr>
-      </table>
+      </tbody></table>
       <pre><code>from agentic_ontologist.retrieval import JevContextHarness
 
 harness = JevContextHarness(shadow=True, min_relevance=0.2)
@@ -210,8 +202,7 @@ print(workspace.last_context_selection.metrics())</code></pre>
     <section id="agents" class="api-section">
       <p class="eyebrow">agentic_ontologist.agents</p>
       <h2 id="agent-runtime">Agent runtime</h2>
-      <table>
-        <tr><th>Class / function</th><th>Purpose</th><th>Source</th></tr>
+      <table><thead><tr><th scope="col">Class / function</th><th scope="col">Purpose</th><th scope="col">Source</th></tr></thead><tbody>
         <tr><td><code>Agent</code></td><td>Model invocation, registered tool execution, events, traces, and optional persistence.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/agents/core/agent.py">agent.py</a></td></tr>
         <tr><td><code>JevModelRouter</code></td><td>Asks Jev one choice question and selects <code>local</code>, <code>standard</code>, or <code>careful</code> for the rest of the run. Unavailable Jev fails open to the current model.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/agents/decisions.py">decisions.py</a></td></tr>
         <tr><td><code>ToolRiskGate</code></td><td>Asks Jev whether a configured tool call is unsafe. A probability at or above the threshold returns a refusal and does not call the tool.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/agents/decisions.py">decisions.py</a></td></tr>
@@ -219,7 +210,7 @@ print(workspace.last_context_selection.metrics())</code></pre>
         <tr><td><code>ThoughtGraph</code></td><td>Structured thought representation and query-node optimization.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/agents/ontology_of_thought/graph.py">graph.py</a></td></tr>
         <tr><td><code>QueryOptimizer</code></td><td>HumanGS-style candidate selection over thought graphs.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/agents/ontology_of_thought/optimizer.py">optimizer.py</a></td></tr>
         <tr><td><code>Trace</code>, <code>TraceStep</code></td><td>Typed execution trace records.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/agents/runtime/trace.py">trace.py</a></td></tr>
-      </table>
+      </tbody></table>
       <pre><code>from agentic_ontologist.agents import Agent, JevModelRouter, ToolRiskGate
 
 agent = Agent(
@@ -233,12 +224,11 @@ run = agent.invoke("Explain the match.", return_trace=True)</code></pre>
 
       <h3>Model routing</h3>
       <p><code>create_model_router()</code> returns a router when <code>AGONTO_MODEL_ROUTING=jev</code>. It asks one choice question, then <code>Agent.invoke</code> uses the selected model for that run.</p>
-      <table>
-        <tr><th>Route</th><th>Criterion</th><th>Model</th></tr>
+      <table><thead><tr><th scope="col">Route</th><th scope="col">Criterion</th><th scope="col">Model</th></tr></thead><tbody>
         <tr><td><code>local</code></td><td>Short lookups, extraction, and questions answerable from retrieved ontology context.</td><td><code>AGONTO_ROUTE_LOCAL</code>, default <code>ollama:phi3</code></td></tr>
         <tr><td><code>standard</code></td><td>Normal ontology question answering and relation lookup.</td><td><code>AGONTO_ROUTE_STANDARD</code>, default <code>LLM_MODEL</code></td></tr>
         <tr><td><code>careful</code></td><td>Alignment disputes, conflicts, refinement, or multi-ontology reasoning.</td><td><code>AGONTO_ROUTE_CAREFUL</code>, default <code>LLM_MODEL</code></td></tr>
-      </table>
+      </tbody></table>
       <p>The <code>model_route</code> step and the <code>llm_invoke</code> step store <code>name</code>, <code>model_name</code>, <code>probabilities</code>, <code>confidence</code>, <code>fail_open</code>, and <code>error</code>. The same payload is emitted as <code>model.routed</code> for Ontology-of-Thought. If Jev is unavailable, the run fails open to the current model.</p>
 
       <h3>Tool-risk gating</h3>
@@ -248,17 +238,16 @@ run = agent.invoke("Explain the match.", return_trace=True)</code></pre>
       <p>The tool function is not called. The <code>tool_execute</code> step status is <code>blocked</code>, and Ontology-of-Thought receives <code>tool.blocked</code>. Arguments are passed through <code>redact</code> before the request. Query text and those redacted arguments are still sent to TypeSafe. When the gate is enabled and Jev cannot decide, that gated call fails closed. A disabled gate leaves every tool call unchanged.</p>
     </section>
 
-    <section id="validation" class="api-section">
+    <section id="validation-api" class="api-section">
       <p class="eyebrow">agentic_ontologist.validation</p>
       <h2 id="validation">Validation</h2>
-      <table>
-        <tr><th>API</th><th>Input → output</th><th>Source</th></tr>
+      <table><thead><tr><th scope="col">API</th><th scope="col">Input → output</th><th scope="col">Source</th></tr></thead><tbody>
         <tr><td><code>evaluate_alignment(expected, predicted)</code></td><td>Alignment pairs → <code>AlignmentMetrics</code>.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/validation/metrics.py">metrics.py</a></td></tr>
         <tr><td><code>ValidationPipeline</code></td><td>Tuples → normalization, evaluation, and optional ontology translation.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/validation/pipeline.py">pipeline.py</a></td></tr>
         <tr><td><code>TupleEvaluator</code></td><td><code>Sequence[str]</code> → <code>TupleEvaluation</code>.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/validation/tuples.py">tuples.py</a></td></tr>
         <tr><td><code>validate_matches(...)</code></td><td>Candidate matches → <code>ValidationReport</code>.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/validation/rules.py">rules.py</a></td></tr>
         <tr><td><code>agonto-lint</code></td><td>Ontology file → terminal diagnostics and process status.</td><td><a href="https://github.com/lamng3/agentic-ontologist/blob/master/src/agentic_ontologist/validation/ontology_lint.py">ontology_lint.py</a></td></tr>
-      </table>
+      </tbody></table>
     </section>
 
     <section id="prompting" class="api-section">
@@ -280,13 +269,12 @@ decision = parse_equivalence_answer(model.invoke(prompt).content)</code></pre>
     <section id="uq" class="api-section">
       <p class="eyebrow">agentic_ontologist.uq</p>
       <h2 id="uncertainty-quantification">Uncertainty quantification</h2>
-      <table>
-        <tr><th>Scorer</th><th>Dependency</th><th>Use</th></tr>
+      <table><thead><tr><th scope="col">Scorer</th><th scope="col">Dependency</th><th scope="col">Use</th></tr></thead><tbody>
         <tr><td><code>AgreementConfidenceScorer</code></td><td>Core</td><td>Dependency-free agreement over repeated responses.</td></tr>
         <tr><td><code>UQLMConfidenceScorer</code></td><td><code>agentic-ontologist[uq]</code></td><td>Black-box UQLM confidence.</td></tr>
         <tr><td><code>GraphConfidenceScorer</code></td><td><code>agentic-ontologist[uq]</code></td><td>Graph-based UQLM scoring.</td></tr>
         <tr><td><code>EnsembleConfidenceScorer</code></td><td><code>agentic-ontologist[uq]</code></td><td>Weighted multi-scorer confidence.</td></tr>
-      </table>
+      </tbody></table>
       <pre><code>from agentic_ontologist.uq import AgreementConfidenceScorer
 
 scorer = AgreementConfidenceScorer(llm=llm, num_responses=5)

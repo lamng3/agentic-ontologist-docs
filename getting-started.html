@@ -15,7 +15,7 @@
 <a class="skip" href="#content">Skip to content</a>
 <header class="site">
   <a class="logo" href="index.html"><span class="logo-mark">AO</span><span>Agentic Ontologist</span></a>
-  <nav class="site">
+  <nav class="site" aria-label="Site">
     <a href="getting-started.html">Start</a>
     <a href="agents.html">Agents</a>
     <a href="architecture.html">Architecture</a>
@@ -25,14 +25,14 @@
 </header>
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
-<nav class="nav">
+<nav class="nav" aria-label="Manual pages">
 <a class="brand-desk" href="index.html">Agentic Ontologist Manual</a><input class="search" id="q" type="search" placeholder="Search the manual" autocomplete="off"><ul id="results" hidden></ul><a href="index.html">Overview</a><a href="agents.html">Agents</a><a href="getting-started.html" aria-current="page">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="leaderboard.html">Leaderboard</a><a href="reference.html">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">Setup</p>
 <h1>Getting started</h1>
 <p class="lede">Install the Agentic Ontologist, inspect an ontology, and query it directly from the terminal.</p>
-<nav class="toc"><strong>On this page</strong><ol><li><a href="#install">Install</a></li><li><a href="#configure">Configure</a></li><li><a href="#inspect-an-ontology">Inspect an ontology</a></li><li><a href="#search-locally">Search locally</a></li><li><a href="#ask-questions">Ask questions</a></li><li><a href="#run-the-evaluation-pipeline">Run the evaluation pipeline</a></li><li><a href="#select-retrieval-backends">Select retrieval backends</a></li><li><a href="#route-models-and-gate-tools">Route models and gate tools</a></li><li><a href="#verify">Verify</a></li></ol></nav>
+<nav class="toc" aria-label="On this page"><strong>On this page</strong><ol><li><a href="#install">Install</a></li><li><a href="#configure">Configure</a></li><li><a href="#inspect-an-ontology">Inspect an ontology</a></li><li><a href="#search-locally">Search locally</a></li><li><a href="#ask-questions">Ask questions</a></li><li><a href="#run-the-evaluation-pipeline">Run the evaluation pipeline</a></li><li><a href="#select-retrieval-backends">Select retrieval backends</a></li><li><a href="#route-models-and-gate-tools">Route models and gate tools</a></li><li><a href="#verify">Verify</a></li></ol></nav>
 <h2 id="install">Install</h2>
     <pre><code>git clone https://github.com/lamng3/agentic-ontologist.git
 cd agentic-ontologist
@@ -46,8 +46,7 @@ uv pip install -e ".[openai,knowledge-graph,dev]"</code></pre>
     <h2 id="configure">Configure</h2>
     <pre><code>cp .env.example .env</code></pre>
     <p>Set one model provider and any retrieval services required by your workflow.</p>
-    <table>
-      <tr><th>Purpose</th><th>Variables</th></tr>
+    <table><thead><tr><th scope="col">Purpose</th><th scope="col">Variables</th></tr></thead><tbody>
       <tr><td>Model</td><td><code>LLM_MODEL</code>, one provider API key</td></tr>
       <tr><td>Ontology lookup</td><td><code>BIOPORTAL_API_KEY</code></td></tr>
       <tr><td>Web lookup</td><td><code>TAVILY_API_KEY</code></td></tr>
@@ -55,7 +54,7 @@ uv pip install -e ".[openai,knowledge-graph,dev]"</code></pre>
       <tr><td>Knowledge graph</td><td><code>NEO4J_URI</code>, <code>NEO4J_USER</code>, <code>NEO4J_PASSWORD</code></td></tr>
       <tr><td>Thought storage</td><td><code>DYNAMO_TABLE</code>, AWS credentials, or <code>AGONTO_DYNAMO_DISABLED=1</code></td></tr>
       <tr><td>Jev decisions</td><td><code>JEV_API_KEY</code>, then any of <code>AGONTO_CONTEXT_HARNESS</code>, <code>AGONTO_MODEL_ROUTING</code>, <code>AGONTO_TOOL_GATE</code></td></tr>
-    </table>
+    </tbody></table>
 
     <h2 id="inspect-an-ontology">Inspect an ontology</h2>
     <pre><code>agonto inspect data/my-ontology.owl
@@ -99,11 +98,10 @@ export AGONTO_MODEL_ROUTING=jev
 export AGONTO_ROUTE_LOCAL=ollama:phi3
 export AGONTO_ROUTE_CAREFUL=deepseek-ai/DeepSeek-R1-Distill-Llama-70B
 export AGONTO_TOOL_GATE=jev</code></pre>
-    <table>
-      <tr><th>Decision</th><th>What Jev chooses</th><th>If Jev cannot decide</th></tr>
+    <table><thead><tr><th scope="col">Decision</th><th scope="col">What Jev chooses</th><th scope="col">If Jev cannot decide</th></tr></thead><tbody>
       <tr><td>Model routing</td><td><code>local</code> for short lookups, <code>standard</code> for normal ontology questions, <code>careful</code> for alignment, conflicts, and multi-ontology reasoning. The chosen model is used for the whole run.</td><td>Fail open to <code>LLM_MODEL</code>.</td></tr>
       <tr><td>Tool-risk gating</td><td>Whether <code>search_term_context</code> or <code>search_knowledge_graph</code> is unsafe to run. A probability at or above <code>AGONTO_TOOL_RISK_THRESHOLD</code> (default <code>0.5</code>) returns a refusal and does not call the tool. <code>ontology_term_info</code> is not gated.</td><td>Fail closed for gated tools only.</td></tr>
-    </table>
+    </tbody></table>
     <p>The query and redacted tool arguments are sent to TypeSafe. Routing stores <code>name</code>, <code>model_name</code>, <code>probabilities</code>, <code>confidence</code>, and <code>fail_open</code> on the trace and emits <code>model.routed</code>. A blocked call sets the <code>tool_execute</code> step to <code>blocked</code> and emits <code>tool.blocked</code>.</p>
 
     <h2 id="verify">Verify</h2>

@@ -15,7 +15,7 @@
 <a class="skip" href="#content">Skip to content</a>
 <header class="site">
   <a class="logo" href="index.html"><span class="logo-mark">AO</span><span>Agentic Ontologist</span></a>
-  <nav class="site">
+  <nav class="site" aria-label="Site">
     <a href="getting-started.html">Start</a>
     <a href="agents.html">Agents</a>
     <a href="architecture.html">Architecture</a>
@@ -25,24 +25,23 @@
 </header>
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
-<nav class="nav">
+<nav class="nav" aria-label="Manual pages">
 <a class="brand-desk" href="index.html">Agentic Ontologist Manual</a><input class="search" id="q" type="search" placeholder="Search the manual" autocomplete="off"><ul id="results" hidden></ul><a href="index.html">Overview</a><a href="agents.html">Agents</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html" aria-current="page">Experiments</a><a href="leaderboard.html">Leaderboard</a><a href="reference.html">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">Evaluation</p>
 <h1>Experiments</h1>
 <p class="lede">Run versioned JSON suites and retain readable, reproducible results without mixing generated artifacts into the library.</p>
-<nav class="toc"><strong>On this page</strong><ol><li><a href="#the-orchestrator-on-mouse-human">The orchestrator on Mouse–Human</a></li><li><a href="#start-with-the-smoke-benchmark">Start with the smoke benchmark</a></li><li><a href="#hosted-tracking">Hosted tracking</a></li><li><a href="#compare-context-selection">Compare context selection</a></li><li><a href="#fetch-benchmark-data">Fetch benchmark data</a></li><li><a href="#inspect-before-running">Inspect before running</a></li><li><a href="#run">Run</a></li><li><a href="#maintained-ablations">Maintained ablations</a></li><li><a href="#local-artifacts">Local artifacts</a></li></ol></nav>
+<nav class="toc" aria-label="On this page"><strong>On this page</strong><ol><li><a href="#the-orchestrator-on-mouse-human">The orchestrator on Mouse–Human</a></li><li><a href="#start-with-the-smoke-benchmark">Start with the smoke benchmark</a></li><li><a href="#hosted-tracking">Hosted tracking</a></li><li><a href="#compare-context-selection">Compare context selection</a></li><li><a href="#fetch-benchmark-data">Fetch benchmark data</a></li><li><a href="#inspect-before-running">Inspect before running</a></li><li><a href="#run">Run</a></li><li><a href="#maintained-ablations">Maintained ablations</a></li><li><a href="#local-artifacts">Local artifacts</a></li></ol></nav>
 <h2 id="the-orchestrator-on-mouse-human">The orchestrator on Mouse–Human</h2>
 <p><code>experiments/agentic_workflow</code> runs each subagent on the OAEI anatomy track under five routing policies. Answers are shared across policies, and each policy is charged for the questions it asked.</p>
-<table>
-<tr><th>Policy</th><th>Matching F1</th><th>Extraction precision / recall</th><th>Reasoning correct / exact</th><th>API calls</th><th>API spend</th></tr>
+<table><thead><tr><th scope="col">Policy</th><th scope="col">Matching F1</th><th scope="col">Extraction precision / recall</th><th scope="col">Reasoning correct / exact</th><th scope="col">API calls</th><th scope="col">API spend</th></tr></thead><tbody>
 <tr><td>Routed</td><td>0.913</td><td>0.617 / 0.567</td><td>0.25 / 0.24</td><td>97</td><td>$0.96</td></tr>
 <tr><td>Routed, capped</td><td>0.855</td><td>0.533 / 0.433</td><td>0.25 / 0.24</td><td>30</td><td>$0.30</td></tr>
 <tr><td>Local only (llama3.1)</td><td>0.823</td><td>0.276 / 0.293</td><td>0.19 / 0.19</td><td>0</td><td>$0</td></tr>
 <tr><td>API only (claude-sonnet-5-5)</td><td>0.924</td><td>0.740 / 0.620</td><td>0.43 / 0.36</td><td>108</td><td>$1.11</td></tr>
 <tr><td>Evidence only</td><td>0.839</td><td>0.800 / 0.367</td><td>0.42 / 0.34</td><td>0</td><td>$0</td></tr>
-</table>
+</tbody></table>
 <p>With llama3.1 as the local tier, audits show it disagrees with the API model too often, so the orchestrator stops trusting it and routing saves little beyond the free evidence tier. Reasoning has fewer questions than one recalibration round, so the routed policy kept llama3.1's placements there. Every decision is in the <a href="https://lamng3.com/agentic-ontologist/showcase/">showcase</a>.</p>
 <pre><code>python experiments/agentic_workflow/run.py --json results/agentic_workflow/2026-10-18.json
 python showcase/build.py results/agentic_workflow/2026-10-18.json</code></pre>
@@ -86,13 +85,12 @@ git lfs pull</code></pre>
     <p>The equivalent direct command is <code>python -m experiments CONFIG.json</code>. The shell entry point resolves named maintained suites and uses the repository environment.</p>
 
     <h2 id="maintained-ablations">Maintained ablations</h2>
-    <table>
-      <tr><th>Name</th><th>Purpose</th></tr>
+    <table><thead><tr><th scope="col">Name</th><th scope="col">Purpose</th></tr></thead><tbody>
       <tr><td><code>baseline</code></td><td>Embedding-based alignment with fixed seed</td></tr>
       <tr><td><code>with-refinement</code></td><td>Adds rule-based relation refinement</td></tr>
       <tr><td><code>with-uq</code></td><td>Adds formal uncertainty scoring</td></tr>
       <tr><td><code>noise-10</code></td><td>Measures robustness under 10% ontology noise</td></tr>
-    </table>
+    </tbody></table>
 
     <h2 id="local-artifacts">Local artifacts</h2>
     <pre><code>results/experiments/smoke/

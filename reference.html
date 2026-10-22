@@ -15,7 +15,7 @@
 <a class="skip" href="#content">Skip to content</a>
 <header class="site">
   <a class="logo" href="index.html"><span class="logo-mark">AO</span><span>Agentic Ontologist</span></a>
-  <nav class="site">
+  <nav class="site" aria-label="Site">
     <a href="getting-started.html">Start</a>
     <a href="agents.html">Agents</a>
     <a href="architecture.html">Architecture</a>
@@ -25,14 +25,14 @@
 </header>
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
-<nav class="nav">
+<nav class="nav" aria-label="Manual pages">
 <a class="brand-desk" href="index.html">Agentic Ontologist Manual</a><input class="search" id="q" type="search" placeholder="Search the manual" autocomplete="off"><ul id="results" hidden></ul><a href="index.html">Overview</a><a href="agents.html">Agents</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="leaderboard.html">Leaderboard</a><a href="reference.html" aria-current="page">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">Commands</p>
 <h1>Reference</h1>
 <p class="lede">Commands, extension points, and environment variables.</p>
-<nav class="toc"><strong>On this page</strong><ol><li><a href="#command-line-interfaces">Command-line interfaces</a></li><li><a href="#supported-ontology-inputs">Supported ontology inputs</a></li><li><a href="#public-extension-points">Public extension points</a></li><li><a href="#repository-layout">Repository layout</a></li><li><a href="#jev-environment">Jev environment</a></li><li><a href="#security">Security</a></li><li><a href="#authors">Authors</a></li></ol></nav>
+<nav class="toc" aria-label="On this page"><strong>On this page</strong><ol><li><a href="#command-line-interfaces">Command-line interfaces</a></li><li><a href="#supported-ontology-inputs">Supported ontology inputs</a></li><li><a href="#public-extension-points">Public extension points</a></li><li><a href="#repository-layout">Repository layout</a></li><li><a href="#jev-environment">Jev environment</a></li><li><a href="#security">Security</a></li><li><a href="#authors">Authors</a></li></ol></nav>
 <h2 id="command-line-interfaces">Command-line interfaces</h2>
     <pre><code>agonto --help
 agonto inspect ONTOLOGY.owl
@@ -49,8 +49,7 @@ agonto-lint ONTOLOGY.ttl
     <p>The path-based CLI detects OWL/RDF XML (<code>.owl</code>, <code>.rdf</code>, <code>.xml</code>), Turtle, N3, N-Triples, TriG, TriX, and JSON-LD. Use <code>--format</code> when a file extension is ambiguous.</p>
 
     <h2 id="public-extension-points">Public extension points</h2>
-    <table>
-      <tr><th>API</th><th>Purpose</th></tr>
+    <table><thead><tr><th scope="col">API</th><th scope="col">Purpose</th></tr></thead><tbody>
       <tr><td><code>create_web_search(name, **options)</code></td><td>Select static, dataset, MediaWiki, Google CSE, or a registered provider</td></tr>
       <tr><td><code>register_web_search(plugin, factory)</code></td><td>Add a visible project-specific search provider</td></tr>
       <tr><td><code>create_vector_index(name, **options)</code></td><td>Create exact, ANN, DiskANN, or vector-database indexes</td></tr>
@@ -59,11 +58,10 @@ agonto-lint ONTOLOGY.ttl
       <tr><td><code>Parser(path).to_ontology()</code></td><td>Parse supported RDF or relation-dataset formats through one facade</td></tr>
       <tr><td><code>create_model_router()</code></td><td>Choose <code>local</code>, <code>standard</code>, or <code>careful</code> once per run when <code>AGONTO_MODEL_ROUTING=jev</code></td></tr>
       <tr><td><code>create_tool_gate()</code></td><td>Block configured external tool calls when <code>AGONTO_TOOL_GATE=jev</code></td></tr>
-    </table>
+    </tbody></table>
 
     <h2 id="repository-layout">Repository layout</h2>
-    <table>
-      <tr><td><code>src/agentic_ontologist/</code></td><td>Installable library</td></tr>
+    <table><tbody><tr><td><code>src/agentic_ontologist/</code></td><td>Installable library</td></tr>
       <tr><td><code>tests/</code></td><td>Automated tests</td></tr>
       <tr><td><code>examples/</code></td><td>Runnable examples</td></tr>
       <tr><td><code>experiments/</code></td><td>Runner and maintained configurations</td></tr>
@@ -71,16 +69,15 @@ agonto-lint ONTOLOGY.ttl
       <tr><td><code>data/</code></td><td>Ontology and benchmark data</td></tr>
       <tr><td><code>docs/</code></td><td>This static instruction website</td></tr>
       <tr><td><code>results/</code></td><td>Ignored generated artifacts</td></tr>
-    </table>
+    </tbody></table>
 
     <h2 id="jev-environment">Jev environment</h2>
-    <table>
-      <tr><th>Variable</th><th>Purpose</th></tr>
+    <table><thead><tr><th scope="col">Variable</th><th scope="col">Purpose</th></tr></thead><tbody>
       <tr><td><code>JEV_API_KEY</code></td><td>TypeSafe key. Copied to <code>TYPESAFE_API_KEY</code> when that variable is empty.</td></tr>
       <tr><td><code>AGONTO_CONTEXT_HARNESS</code></td><td>Set to <code>jev</code> to score retrieved context. <code>AGONTO_CONTEXT_MODE</code> is <code>shadow</code> or <code>live</code>.</td></tr>
       <tr><td><code>AGONTO_MODEL_ROUTING</code></td><td>Set to <code>jev</code> to route each run. Pair with <code>AGONTO_ROUTE_LOCAL</code>, <code>AGONTO_ROUTE_STANDARD</code>, and <code>AGONTO_ROUTE_CAREFUL</code>.</td></tr>
       <tr><td><code>AGONTO_TOOL_GATE</code></td><td>Set to <code>jev</code> to gate tools. <code>AGONTO_GATED_TOOLS</code> lists names, and <code>AGONTO_TOOL_RISK_THRESHOLD</code> defaults to <code>0.5</code>.</td></tr>
-    </table>
+    </tbody></table>
     <p>Routing fails open to <code>LLM_MODEL</code>. An enabled tool gate fails closed for gated tools only. Query text and redacted tool arguments are sent to TypeSafe. Decisions appear on the existing trace as <code>model.routed</code> and <code>tool.blocked</code>.</p>
 
     <h2 id="security">Security</h2>

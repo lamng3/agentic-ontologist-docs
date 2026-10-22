@@ -45,9 +45,7 @@ def main():
     data = json.loads((ROOT / "demo-data.json").read_text())
     body = (ROOT / "home-body.html").read_text()
     hero = HERO.format(lede=LEDE, body=body, local=data["local"], api=data["api"])
-    page = f"""<!DOCTYPE html>
-<html lang="en">
-{HEAD}
+    page = f"""{HEAD}
 <body>
 <a class="skip" href="#content">Skip to content</a>
 {HEADER}
