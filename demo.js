@@ -27,10 +27,10 @@
     at = (at + 1) % data.sample.length;
     var d = data.sample[at];
     var box = el("question");
-    var at = TIERS.findIndex(function (t) { return t[0] === d.tier; });
+    var settled = TIERS.findIndex(function (t) { return t[0] === d.tier; });
     var steps = TIERS.map(function (t, i) {
-      var what = i < at ? "not sure enough, passed it on" : i === at ? "settled it" : "not needed";
-      return '<div class="step' + (i === at ? " on" : "") + '"><b>' + t[1] + "</b>" + what + "</div>";
+      var what = i < settled ? "not sure enough, passed it on" : i === settled ? "settled it" : "not needed";
+      return '<div class="step' + (i === settled ? " on" : "") + '"><b>' + t[1] + "</b>" + what + "</div>";
     }).join("");
     box.innerHTML =
       '<p class="pair">Is <b></b> the same as <b></b>?</p><div class="steps">' + steps + "</div>" +
