@@ -20,6 +20,7 @@ HERO = """<section class="hero">
 <span class="prompt">$ </span>agonto chat ontology.owl</pre>
     <div class="actions">
       <a class="btn solid" href="getting-started.html">Get started</a>
+      <a class="btn" href="playground.html">Playground</a>
       <a class="btn" href="agents.html">Agents</a>
       <a class="btn" href="https://lamng3.com/agentic-ontologist/showcase/">Showcase</a>
     </div>
