@@ -21,7 +21,7 @@ HERO = """<section class="hero">
     <div class="actions">
       <a class="btn solid" href="getting-started.html">Get started</a>
       <a class="btn" href="agents.html">Agents</a>
-      <a class="btn" href="https://lamng3.github.io/agentic-ontologist/">Showcase</a>
+      <a class="btn" href="https://lamng3.com/agentic-ontologist/showcase/">Showcase</a>
     </div>
   </div>
   <div class="demo-card" id="demo">
@@ -31,7 +31,7 @@ HERO = """<section class="hero">
     <hr class="rule">
     <div class="head"><h3>Watch one question get settled</h3><button class="btn" id="ask">Another</button></div>
     <div class="ask" id="question"></div>
-    <p class="note">The numbers and the decisions are from the recorded run on <span id="track"></span> ({local} and {api}), the same file as the <a href="https://lamng3.github.io/agentic-ontologist/">showcase</a>. The page computes nothing.</p>
+    <p class="note">The numbers and the decisions are from the recorded run on <span id="track"></span> ({local} and {api}), the same file as the <a href="https://lamng3.com/agentic-ontologist/showcase/">showcase</a>. The page computes nothing.</p>
   </div>
 </section>
 <section class="block"><div class="prose-home">{body}</div></section>

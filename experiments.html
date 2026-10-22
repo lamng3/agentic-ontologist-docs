@@ -41,7 +41,7 @@
 <tr><td>API only (claude-sonnet-5-5)</td><td>0.924</td><td>0.740 / 0.620</td><td>0.43 / 0.36</td><td>108</td><td>$1.11</td></tr>
 <tr><td>Evidence only</td><td>0.839</td><td>0.800 / 0.367</td><td>0.42 / 0.34</td><td>0</td><td>$0</td></tr>
 </table>
-<p>With llama3.1 as the local tier, audits show it disagrees with the API model too often, so the orchestrator stops trusting it and routing saves little beyond the free evidence tier. Reasoning has fewer questions than one recalibration round, so the routed policy kept llama3.1's placements there. Every decision is in the <a href="https://lamng3.github.io/agentic-ontologist/">showcase</a>.</p>
+<p>With llama3.1 as the local tier, audits show it disagrees with the API model too often, so the orchestrator stops trusting it and routing saves little beyond the free evidence tier. Reasoning has fewer questions than one recalibration round, so the routed policy kept llama3.1's placements there. Every decision is in the <a href="https://lamng3.com/agentic-ontologist/showcase/">showcase</a>.</p>
 <pre><code>python experiments/agentic_workflow/run.py --json results/agentic_workflow/2026-10-18.json
 python showcase/build.py results/agentic_workflow/2026-10-18.json</code></pre>
 
