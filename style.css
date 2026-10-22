@@ -318,3 +318,4 @@ main:has(.pg) { max-width: none; }
 .cand .btn { white-space: nowrap; padding: 2px 12px; }
 .cand th { font-family: var(--font); font-size: 13px; white-space: normal; }
 .pg input[type="range"] { accent-color: var(--primary); }
+.pg progress { accent-color: var(--primary); width: 10em; height: 8px; }
