@@ -26,13 +26,14 @@
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
 <nav class="nav">
-<a class="brand-desk" href="index.html">Agentic Ontologist</a><a href="index.html">Overview</a><a href="agents.html">Agents</a><a href="getting-started.html" aria-current="page">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html">Reference</a>
+<a class="brand-desk" href="index.html">Agentic Ontologist</a><input class="search" id="q" type="search" placeholder="Search the manual" autocomplete="off"><ul id="results" hidden></ul><a href="index.html">Overview</a><a href="agents.html">Agents</a><a href="getting-started.html" aria-current="page">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">Setup</p>
 <h1>Getting started</h1>
 <p class="lede">Install the Agentic Ontologist, inspect an ontology, and query it directly from the terminal.</p>
-<h2>Install</h2>
+<nav class="toc"><strong>On this page</strong><ol><li><a href="#install">Install</a></li><li><a href="#configure">Configure</a></li><li><a href="#inspect-an-ontology">Inspect an ontology</a></li><li><a href="#search-locally">Search locally</a></li><li><a href="#ask-questions">Ask questions</a></li><li><a href="#run-the-evaluation-pipeline">Run the evaluation pipeline</a></li><li><a href="#select-retrieval-backends">Select retrieval backends</a></li><li><a href="#route-models-and-gate-tools">Route models and gate tools</a></li><li><a href="#verify">Verify</a></li></ol></nav>
+<h2 id="install">Install</h2>
     <pre><code>git clone https://github.com/lamng3/agentic-ontologist.git
 cd agentic-ontologist
 ./setup.sh
@@ -42,7 +43,7 @@ source .venv/bin/activate</code></pre>
 source .venv/bin/activate
 uv pip install -e ".[openai,knowledge-graph,dev]"</code></pre>
 
-    <h2>Configure</h2>
+    <h2 id="configure">Configure</h2>
     <pre><code>cp .env.example .env</code></pre>
     <p>Set one model provider and any retrieval services required by your workflow.</p>
     <table>
@@ -56,17 +57,17 @@ uv pip install -e ".[openai,knowledge-graph,dev]"</code></pre>
       <tr><td>Jev decisions</td><td><code>JEV_API_KEY</code>, then any of <code>AGONTO_CONTEXT_HARNESS</code>, <code>AGONTO_MODEL_ROUTING</code>, <code>AGONTO_TOOL_GATE</code></td></tr>
     </table>
 
-    <h2>Inspect an ontology</h2>
+    <h2 id="inspect-an-ontology">Inspect an ontology</h2>
     <pre><code>agonto inspect data/my-ontology.owl
 agonto inspect data/my-ontology.ttl --json</code></pre>
     <p><code>inspect</code> parses local OWL, RDF/XML, Turtle, N-Triples, TriG, TriX, or JSON-LD without loading an embedding or language model.</p>
 
-    <h2>Search locally</h2>
+    <h2 id="search-locally">Search locally</h2>
     <pre><code>agonto search data/my-ontology.owl \
   "water quality measurement" --top-k 8</code></pre>
     <p>This builds the concept graph and returns the most relevant ontology concepts. The first run may download the configured text embedding model.</p>
 
-    <h2>Ask questions</h2>
+    <h2 id="ask-questions">Ask questions</h2>
     <pre><code># One question
 agonto query data/my-ontology.owl \
   "Which concepts describe freshwater temperature?"
@@ -77,12 +78,12 @@ agonto chat data/my-ontology.owl</code></pre>
     <p>For a local model, set <code>LLM_MODEL=ollama:llama3.1</code>. Hosted models require the corresponding API key. The Ollama client is installed with the Agentic Ontologist.</p>
     <p><code>search</code>, <code>query</code>, and <code>chat</code> save concept embeddings under <code>results/memory</code> and load them on the next run. Delete that store with <code>agonto memory clear data/my-ontology.owl</code>. Pass <code>--no-save-memory</code> to skip writing it. Answers are cached separately under <code>results/cache</code>. The <a href="architecture.html">architecture page</a> describes the hot, short-term, and long-term tiers and how eviction keeps each one inside its cap.</p>
 
-    <h2>Run the evaluation pipeline</h2>
+    <h2 id="run-the-evaluation-pipeline">Run the evaluation pipeline</h2>
     <pre><code>agonto run --ontology envo sweet --top_k 10 --eval_alignment
 agonto run --ontology envo sweet --eval_alignment --refine</code></pre>
     <p>Catalog-based evaluation output is written under <code>results/runs/</code>.</p>
 
-    <h2>Select retrieval backends</h2>
+    <h2 id="select-retrieval-backends">Select retrieval backends</h2>
     <pre><code>from agentic_ontologist.retrieval import create_vector_index, create_web_search
 
 web = create_web_search("mediawiki")
@@ -90,7 +91,7 @@ index = create_vector_index("torch-exact", dimension=768)</code></pre>
     <p>Use <code>static</code> or <code>dataset</code> for deterministic offline work. Register project-specific web, ANN, DiskANN, or vector-database adapters through the same public retrieval API.</p>
     <p>Optional Jev context selection is separate from retrieval. Install it with <code>uv sync --extra jev</code>, set <code>JEV_API_KEY</code>, and enable <code>AGONTO_CONTEXT_HARNESS=jev</code>. It starts in shadow mode and fails open to the original shortlist.</p>
 
-    <h2>Route models and gate tools</h2>
+    <h2 id="route-models-and-gate-tools">Route models and gate tools</h2>
     <p>Model routing and tool-risk gating use the same Jev key. They stay off until enabled, and they do not change which evidence the context harness selects.</p>
     <pre><code>uv sync --extra jev
 export JEV_API_KEY=your_typesafe_api_key
@@ -105,11 +106,13 @@ export AGONTO_TOOL_GATE=jev</code></pre>
     </table>
     <p>The query and redacted tool arguments are sent to TypeSafe. Routing stores <code>name</code>, <code>model_name</code>, <code>probabilities</code>, <code>confidence</code>, and <code>fail_open</code> on the trace and emits <code>model.routed</code>. A blocked call sets the <code>tool_execute</code> step to <code>blocked</code> and emits <code>tool.blocked</code>.</p>
 
-    <h2>Verify</h2>
+    <h2 id="verify">Verify</h2>
     <pre><code>python -m pytest -q
 pre-commit run --all-files</code></pre>
+<nav class="pager" aria-label="Pages"><a class="prev" href="agents.html"><span>Previous</span>Agents</a><a class="next" href="architecture.html"><span>Next</span>Architecture</a></nav>
 </main>
 </div>
 <footer class="site">Agentic Ontologist notes. Matching, extraction, reasoning, and validation under a budget.</footer>
+<script src="search.js"></script>
 </body>
 </html>

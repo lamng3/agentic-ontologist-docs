@@ -30,7 +30,7 @@
 <input id="nav-toggle" class="nav-toggle" type="checkbox">
 <div class="layout">
 <nav class="nav">
-<a class="brand-desk" href="index.html">Agentic Ontologist</a><a href="index.html">Overview</a><a href="agents.html" aria-current="page">Agents</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html">Reference</a>
+<a class="brand-desk" href="index.html">Agentic Ontologist</a><input class="search" id="q" type="search" placeholder="Search the manual" autocomplete="off"><ul id="results" hidden></ul><a href="index.html">Overview</a><a href="agents.html" aria-current="page">Agents</a><a href="getting-started.html">Getting started</a><a href="architecture.html">Architecture</a><a href="api.html">API</a><a href="experiments.html">Experiments</a><a href="reference.html">Reference</a>
 </nav>
 <main id="content">
 <p class="kicker">Agents</p>
@@ -89,8 +89,10 @@ print(len(result.matches), result.validation.removed, result.tiers)</code></pre>
 
 <h2 id="cost">Cost</h2>
 <p>Every model call is recorded on <code>agentic_ontologist.costs.METER</code> with its tokens, seconds, and list-price dollars. <code>experiments/agentic_workflow</code> compares the routed policy with a local model alone, an API model alone, a call cap, and evidence alone, on all three tasks; see <a href="experiments.html">Experiments</a> and the live <a href="https://lamng3.com/agentic-ontologist/showcase/">showcase</a>.</p>
+<nav class="pager" aria-label="Pages"><a class="prev" href="index.html"><span>Previous</span>Overview</a><a class="next" href="getting-started.html"><span>Next</span>Getting started</a></nav>
 </main>
 </div>
 <footer class="site">Agentic Ontologist notes. Matching, extraction, reasoning, and validation under a budget.</footer>
+<script src="search.js"></script>
 </body>
 </html>
