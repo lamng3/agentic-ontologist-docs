@@ -27,9 +27,10 @@
     at = (at + 1) % data.sample.length;
     var d = data.sample[at];
     var box = el("question");
-    var steps = TIERS.map(function (t) {
-      var on = t[0] === d.tier;
-      return '<div class="step' + (on ? " on" : "") + '"><b>' + t[1] + "</b>" + (on ? "settled it" : t[2]) + "</div>";
+    var at = TIERS.findIndex(function (t) { return t[0] === d.tier; });
+    var steps = TIERS.map(function (t, i) {
+      var what = i < at ? "not sure enough, passed it on" : i === at ? "settled it" : "not needed";
+      return '<div class="step' + (i === at ? " on" : "") + '"><b>' + t[1] + "</b>" + what + "</div>";
     }).join("");
     box.innerHTML =
       '<p class="pair">Is <b></b> the same as <b></b>?</p><div class="steps">' + steps + "</div>" +
@@ -39,7 +40,7 @@
     b[b.length - 3].textContent = d.ev.toFixed(2); b[b.length - 2].textContent = d.ans; b[b.length - 1].textContent = d.conf.toFixed(2);
     var v = box.querySelector(".verdict");
     v.className = "verdict " + (d.ok ? "ok" : "no");
-    v.textContent = d.ok ? "Correct." : "Wrong: the reference says otherwise.";
+    v.textContent = d.ok ? "Correct." : "Wrong: the reference says " + (d.ans === "yes" ? "no" : "yes") + ". Models are confident and still wrong sometimes; the sample includes such cases on purpose.";
   }
 
   fetch("demo-data.json").then(function (r) { return r.json(); }).then(function (d) {
